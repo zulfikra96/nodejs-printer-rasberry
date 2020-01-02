@@ -1,6 +1,9 @@
 const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const player = require('play-sound')();
+
+
 function print(data)
 {
     // const device  = new escpos.RawBT();
@@ -25,6 +28,9 @@ function print(data)
 	])
      }
 	printer.cut().close();
+    });
+    player.play('./nada.mp3', (err) => {
+        if (err) console.log(`Could not play sound: ${err}`);
     });
 }
 //print();
