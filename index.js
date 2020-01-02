@@ -6,27 +6,44 @@ function print(data)
     // const device  = new escpos.RawBT();
 // const device  = new escpos.Network('localhost');
 // const device  = new escpos.Serial('/dev/usb/lp0');
+     console.log(data);
     const escpos = require('escpos')
-    const device  = new escpos.USB(0x04b8,0x0202);
+    const device  = new escpos.USB(0x0416,0x5011);
     const printer = new escpos.Printer(device);
     device.open(function(err){
     printer
     .align('CT')
     .text('OMAH DHUWUR \n')
-    .text(`\n`)
     .align('LT')
-    .text(`Customer     : ${data.orders.behalf_of}\n`)
-    .text(`Table        : Meja ${data.orders.tables}`)
-    .text("======================================")
-    .tableCustom([ 
-        { text:"Left", align:"LEFT", width:0.33 },
-        { text:"Center", align:"CENTER", width:0.33},
-        { text:"Right", align:"RIGHT", width:0.33 }
-      ]) 
-    .cut()
-    .close()
+    .text(`Customer     : ${data.orders.behalf_of}`)
+    .text(`Table        : ${data.orders.tables}`)
+    .text("================================");
+     for(let i = 0; i < data.carts.length; i++){
+     	printer.tableCustom([
+	   {text:`* ${data.carts[i]["product_name"]}`, align:'LEFT', width:0.4 },
+  	   {text:`${data.carts[i]["quantity"]}`, align:'RIGHT', width:0.2}
+	])
+     }
+	printer.cut().close();
     });
 }
+//print();
+//
+function testPrint()
+{
+   const escpos = require('escpos');
+   const device  = new escpos.USB(0x0416,0x5011);
+   const printer = new escpos.Printer(device);
+   device.open(() => {
+   	printer
+	   .align("CT");
+
+	printer.table(['hello world','hello world']);
+	printer.table(['hello world','hello world']);
+	printer.close();
+   })
+}
+//testPrint();
 
 io.on('connection',(socket) => {
     console.log("socket connected !!")
