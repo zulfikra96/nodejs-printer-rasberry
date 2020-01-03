@@ -9,26 +9,28 @@ function print(data)
     // const device  = new escpos.RawBT();
 // const device  = new escpos.Network('localhost');
 // const device  = new escpos.Serial('/dev/usb/lp0');
-     console.log(data);
     const escpos = require('escpos')
     const device  = new escpos.USB(0x0416,0x5011);
     const printer = new escpos.Printer(device);
-    device.open(function(err){
-    printer
-    .align('CT')
-    .text('OMAH DHUWUR \n')
-    .align('LT')
-    .text(`Customer     : ${data.orders.behalf_of}`)
-    .text(`Table        : ${data.orders.tables}`)
-    .text("================================");
-     for(let i = 0; i < data.carts.length; i++){
-     	printer.tableCustom([
-	   {text:`* ${data.carts[i]["product_name"]}`, align:'LEFT', width:0.4 },
-  	   {text:`${data.carts[i]["quantity"]}`, align:'RIGHT', width:0.2}
-	])
-     }
-	printer.cut().close();
-    });
+    if(device){
+        device.open(function(err){
+        printer
+        .align('CT')
+        .text('OMAH DHUWUR \n')
+        .align('LT')
+        .text(`Customer     : ${data.orders.behalf_of}`)
+        .text(`Table        : ${data.orders.tables}`)
+        .text("================================");
+            for(let i = 0; i < data.carts.length; i++){
+                printer.tableCustom([
+            {text:`* ${data.carts[i]["product_name"]}`, align:'LEFT', width:0.4 },
+                {text:`${data.carts[i]["quantity"]}`, align:'RIGHT', width:0.2}
+        ])
+            }
+        printer.cut();
+        this.close();
+        });
+    }
     player.play('./nada.mp3', (err) => {
         if (err) console.log(`Could not play sound: ${err}`);
     });
