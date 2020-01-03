@@ -23,12 +23,12 @@ function print(data)
         .text("================================");
             for(let i = 0; i < data.carts.length; i++){
                 printer.tableCustom([
-            {text:`* ${data.carts[i]["product_name"]}`, align:'LEFT', width:0.4 },
-                {text:`${data.carts[i]["quantity"]}`, align:'RIGHT', width:0.2}
-        ])
-            }
+                    {text:`* ${data.carts[i]["product_name"]}`, align:'LEFT', width:0.4 },
+                    {text:`${data.carts[i]["quantity"]}`, align:'RIGHT', width:0.2}
+                ])
+        }
         printer.cut();
-        this.close();
+        printer.close();
         });
     }
     player.play('./nada.mp3', (err) => {
